@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import './Searchbar.css';
 import { PropTypes } from 'prop-types';
 
-export class Searchbar extends Component {
+export default class Searchbar extends Component {
   state = {
     searchName: '',
   };
@@ -15,7 +15,7 @@ export class Searchbar extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
     if (this.state.searchName.trim() === '') {
-      toast('enter a search term');
+      toast.error('enter search term');
       return;
     }
     this.props.onSubmit(this.state.searchName);
