@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
-// import "./ImageGalleryItem.css"
+import './ImageGalleryItem.css';
 
 export default function ImageGalleryItem({ pictures, openModalIMG }) {
   return pictures.map(({ id, webformatURL, largeImageURL }) => (
-    <li key={id} className="gallery-item">
+    <li key={id} className="ImageGalleryItem">
       <img
-        // className="imageGalleryItem-image"
+        className="ImageGalleryItem-image"
         src={webformatURL}
-        alt={`img №${id}`}
+        alt={`modalImg ${id}`}
         data-url={largeImageURL}
         onClick={openModalIMG}
       />

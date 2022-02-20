@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+// import { ToastContainer } from 'react-toastify';
 
 import Searchbar from './components/Searchbar/Searchbar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
@@ -13,42 +13,41 @@ export default class App extends Component {
     modalImg: {},
   };
 
-  onSubmit = searchName => {
+  handleSearchSubmit = searchName => {
     // console.log(searchName);
     this.setState({ searchName });
   };
 
   toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+    this.setState({ showModal: !this.state.showModal });
   };
 
   openModalIMG = evt => {
-    this.toggleModal();
     const modalImg = {
       largeImageURL: evt.currentTarget.dataset.url,
       alt: evt.currentTarget.alt,
     };
     this.setState({ modalImg });
+    this.toggleModal();
   };
 
   render() {
     const { searchName, showModal, modalImg } = this.state;
     return (
       <div className="App">
-        {!showModal && <Searchbar onSubmit={this.onSubmit} />}
-        <ImageGallery
-          searchName={searchName}
-          openModalIMG={this.openModalIMG}
-        />
-
         {showModal && (
           <Modal onClose={this.toggleModal}>
             <img src={modalImg.largeImageURL} alt={modalImg.alt} />
           </Modal>
         )}
-        <ToastContainer autoClose={3000} />
+
+        <Searchbar onSubmit={this.handleSearchSubmit} />
+        <ImageGallery
+          searchName={searchName}
+          openModalIMG={this.openModalIMG}
+        />
+
+        {/* <ToastContainer autoClose={3000} /> */}
       </div>
     );
   }

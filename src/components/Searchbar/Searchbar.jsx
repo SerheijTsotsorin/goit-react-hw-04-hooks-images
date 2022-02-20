@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import './Searchbar.css';
 import { PropTypes } from 'prop-types';
 
@@ -14,8 +14,12 @@ export default class Searchbar extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
+
     if (this.state.searchName.trim() === '') {
-      toast.error('enter search term');
+      alert('enter search term');
+      // toast.error('Error Notification !', {
+      //   position: toast.POSITION.TOP_LEFT,
+      // });
       return;
     }
     this.props.onSubmit(this.state.searchName);
@@ -35,8 +39,8 @@ export default class Searchbar extends Component {
             onChange={this.handleChange}
             value={this.state.searchName}
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
           />
         </form>

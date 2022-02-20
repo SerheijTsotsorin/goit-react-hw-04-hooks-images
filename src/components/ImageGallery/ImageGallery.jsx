@@ -3,13 +3,21 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from 'components/Loader/Loader';
 import Button from 'components/Button/Button';
 import api from '../Servisces/FetchPictures';
+import './ImageGallery.css';
+
+const Status = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected',
+};
 
 export default class ImageGallery extends Component {
   state = {
     pictures: [],
     page: 1,
     error: null,
-    status: 'idle',
+    status: Status.IDLE,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -19,20 +27,18 @@ export default class ImageGallery extends Component {
     const nextPage = this.state.page;
 
     if (prevSearch !== nextSearch) {
-      this.setState({ status: 'panding' });
+      this.setState({ status: Status.PENDING });
 
       api
         .fetchPictures(nextSearch, 1)
-        .then(data => {
-          this.setState({
-            pictures: data.hits,
-            status: 'resolved',
-          });
-          if (data.total === 0) {
-            return Promise.reject(new Error(`Error search result, try again`));
-          }
-        })
-        .catch(error => this.setState({ error, status: 'rejected' }));
+        .then(data =>
+          this.setState({ pictures: data.hits, status: Status.RESOLVED })
+        )
+        //   if (data.total === 0) {
+        //     return Promise.reject(new Error(`Error search result, try again`));
+        //   }
+        // })
+        .catch(error => this.setState({ error, status: Status.REJECTED }));
     }
 
     if (prevPage !== nextPage) {
@@ -44,7 +50,7 @@ export default class ImageGallery extends Component {
               nextPage > 1 ? [...prevState.pictures, ...data.hits] : data.hits,
           });
         })
-        .catch(error => this.setState({ error, status: 'rejected' }));
+        .catch(error => this.setState({ error, status: Status.REJECTED }));
     }
   }
 
@@ -69,7 +75,7 @@ export default class ImageGallery extends Component {
     if (status === 'resolved') {
       return (
         <>
-          <ul>
+          <ul className="ImageGallery">
             <ImageGalleryItem
               pictures={pictures}
               openModalIMG={this.props.openModalIMG}
