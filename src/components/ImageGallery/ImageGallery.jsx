@@ -31,13 +31,12 @@ export default class ImageGallery extends Component {
 
       api
         .fetchPictures(nextSearch, 1)
-        .then(data =>
-          this.setState({ pictures: data.hits, status: Status.RESOLVED })
-        )
-        //   if (data.total === 0) {
-        //     return Promise.reject(new Error(`Error search result, try again`));
-        //   }
-        // })
+        .then(data => {
+          this.setState({ pictures: data.hits, status: Status.RESOLVED });
+          if (data.total === 0) {
+            return Promise.reject(new Error(`Error search result, try again`));
+          }
+        })
         .catch(error => this.setState({ error, status: Status.REJECTED }));
     }
 
