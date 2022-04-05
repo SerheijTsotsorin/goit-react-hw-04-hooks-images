@@ -1,37 +1,64 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import './Modal.css';
 
-export default class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+export default function Modal({ onClose, children }) {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  handleKeyDown = evt => {
+  const handleKeyDown = evt => {
     if (evt.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  handleClickBackDrop = evt => {
+  const handleClickBackDrop = evt => {
     if (evt.currentTarget === evt.target) {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    return (
-      <div className="Overlay" onClick={this.handleClickBackDrop}>
-        <div className="Modal">{this.props.children}</div>
-      </div>
-    );
-  }
+  return (
+    <div className="Overlay" onClick={handleClickBackDrop}>
+      <div className="Modal">{children}</div>
+    </div>
+  );
 }
+
+// export default class Modal extends Component {
+//   componentDidMount() {
+//     window.addEventListener('keydown', this.handleKeyDown);
+//   }
+
+//   componentWillUnmount() {
+//     window.removeEventListener('keydown', this.handleKeyDown);
+//   }
+
+//   handleKeyDown = evt => {
+//     if (evt.code === 'Escape') {
+//       this.props.onClose();
+//     }
+//   };
+
+//   handleClickBackDrop = evt => {
+//     if (evt.currentTarget === evt.target) {
+//       this.props.onClose();
+//     }
+//   };
+
+//   render() {
+//     return (
+//       <div className="Overlay" onClick={this.handleClickBackDrop}>
+//         <div className="Modal">{this.props.children}</div>
+//       </div>
+//     );
+//   }
+// }
 
 Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
